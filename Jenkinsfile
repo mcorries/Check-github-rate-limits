@@ -1,11 +1,11 @@
 pipeline {
     agent any
-    
-    options {
-        // Turns off the automatic background checkout checks causing the red X block
-        // skipDefaultCheckout()
-    }
-	
+
+  
+//  options {
+//        // Turns off the automatic background checkout checks causing the red X block
+//        // skipDefaultCheckout()
+//  }
     
     environment {
         // Automatically binds both username and password variables globally
