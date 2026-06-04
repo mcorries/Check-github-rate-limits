@@ -5,7 +5,7 @@ pipeline {
         // Required for checkout scm (Username/Password format)
         GITHUB_CREDS = credentials('my-github-creds')
         // Fresh secret text token bound for your flexible API call
-        GITHUB_TOKEN = credentials('Jenkins_Github')
+        GITHUB_TOKEN = credentials('Jenkins-Github')
     }          
     
     stages {
