@@ -1,6 +1,11 @@
 pipeline {
     agent any
     
+    // PREVENTS JENKINS FROM AUTOMATICALLY OVERWRITING YOUR LOCAL WORKSPACE AT STARTUP
+    options {
+        skipDefaultCheckout()
+    }
+    
     environment {
         // Required for checkout scm (Username/Password format) and pushing back to GitHub
         GITHUB_CREDS = credentials('my-github-creds')
