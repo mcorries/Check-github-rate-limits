@@ -27,7 +27,7 @@ pipeline {
                         git config user.email "mcorries123@gmail.com"
                         
                         :: Force the remote origin URL to cleanly incorporate authentication variables
-                        git remote set-url origin https://%GIT_USER%:%GIT_PASS%@://github.com
+                        git remote set-url origin https://%GIT_USER%:%GIT_PASS%@github.com/mcorries/Check-github-rate-limits.git
                         
                         :: =======================================================================
                         :: FUTURE REFERENCE: HOW TO SYNC ADDITIONAL FILES
