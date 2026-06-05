@@ -36,14 +36,18 @@ pipeline {
                         ::    git add .
                         :: =======================================================================
                         
-                        :: CHANGED: Strictly checks ONLY Jenkinsfile and README.md for modifications
+                        :: Strictly checks ONLY Jenkinsfile and README.md for modifications
                         git diff --quiet Jenkinsfile README.md
                         if errorlevel 1 (
-                            echo Local changes detected! Syncing upstream to GitHub...
-                            :: CHANGED: Strictly adds ONLY the two targeted project files
+                            echo Local changes detected! Merging and syncing upstream to GitHub...
                             git add Jenkinsfile README.md
                             git commit -m "Automated workspace sync from Jenkins Build #%BUILD_NUMBER% [skip ci]"
-                            git push origin HEAD:main
+                            
+                            :: Pull and rebase down from the active upstream branch (master) to safely handle dual-sided updates
+                            git pull --rebase origin master
+                            
+                            :: Push the combined, merged history up safely to your active branch
+                            git push origin HEAD
                         ) else (
                             echo No local changes detected. Workspace is safe to refresh.
                         )
