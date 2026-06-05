@@ -26,8 +26,8 @@ pipeline {
                         git config user.name "mcorries"
                         git config user.email "mcorries123@gmail.com"
                         
-                        :: FIXED BY REMOVING THE EXTRA COLON AND SLASHES AFTER THE AT SYMBOL
-                        git remote set-url origin https://%GIT_USER%:%GIT_PASS%@github.com/mcorries/Check-github-rate-limits.git
+                        :: Force the remote origin URL to cleanly incorporate authentication variables
+                        git remote set-url origin https://%GIT_USER%:%GIT_PASS%@://github.com
                         
                         :: =======================================================================
                         :: FUTURE REFERENCE: HOW TO SYNC ADDITIONAL FILES
@@ -41,9 +41,9 @@ pipeline {
                         ::    git add .
                         :: =======================================================================
                         
-                        :: Strictly checks ONLY Jenkinsfile and README.md for modifications
-                        git diff --quiet Jenkinsfile README.md
-                        if errorlevel 1 (
+                        :: NATIVE WINDOWS STATUS CHECK: Searches for local modifications in the targeted files
+                        git status --porcelain Jenkinsfile README.md | findstr /R "^.M" >nul
+                        if %errorlevel% equ 0 (
                             echo Local changes detected! Merging and syncing upstream to GitHub...
                             git add Jenkinsfile README.md
                             git commit -m "Automated workspace sync from Jenkins Build #%BUILD_NUMBER% [skip ci]"
