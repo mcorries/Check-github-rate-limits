@@ -45,7 +45,7 @@ pipeline {
                         :: =======================================================================
                         
                         :: NATIVE WINDOWS STATUS CHECK: Catches any status change (Staged, Unstaged, Untracked)
-                        git status --porcelain Jenkinsfile README.md | findstr . >nul
+                        git status --porcelain Jenkinsfile README.md | findstr . >nul || type nul
                         if %errorlevel% equ 0 (
                             echo Local changes detected! Merging and syncing upstream to GitHub...
                             git add Jenkinsfile README.md
