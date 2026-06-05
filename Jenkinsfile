@@ -25,10 +25,9 @@ pipeline {
                         :: Configure real production git signature for clean traceability
                         :: git config user.name "mcorries"
                         :: git config user.email "mcorries123@gmail.com"
-						::  Change email to my official GitHub anonymous noreply ID address. Because GitHub controls this specific address format, it automatically cross-references it with your Jenkins-Github personal access token string during the push, applies the cryptographic signature on its backend servers, and turns the badge green automatically
-						git config user.name "mcorries"
-						git config user.email "mcorries@users.noreply.github.com"
-
+                        :: Change email to my official GitHub anonymous noreply ID address. Because GitHub controls this specific address format, it automatically cross-references it with your Jenkins-Github personal access token string during the push, applies the cryptographic signature on its backend servers, and turns the badge green automatically
+                        git config user.name "mcorries"
+                        git config user.email "mcorries@users.noreply.github.com"
                         
                         :: Force the remote origin URL to cleanly incorporate authentication variables without typos
                         git remote set-url origin https://%GIT_USER%:%GIT_PASS%@github.com/mcorries/Check-github-rate-limits.git
@@ -45,8 +44,8 @@ pipeline {
                         ::    git add .
                         :: =======================================================================
                         
-                        :: NATIVE WINDOWS STATUS CHECK: Searches for local modifications in the targeted files
-                        git status --porcelain Jenkinsfile README.md | findstr /R "^.M" >nul || type nul
+                        :: NATIVE WINDOWS STATUS CHECK: Catches any status change (Staged, Unstaged, Untracked)
+                        git status --porcelain Jenkinsfile README.md | findstr . >nul
                         if %errorlevel% equ 0 (
                             echo Local changes detected! Merging and syncing upstream to GitHub...
                             git add Jenkinsfile README.md
@@ -68,7 +67,7 @@ pipeline {
         stage('Safe Source Checkout') {
             steps {
                 echo "Starting safe repository checkout..."
-				// Pulls the code from GitHub, locking down your baseline files
+                // Pulls the code from GitHub, locking down your baseline files
                 checkout scm
                 echo "Checkout complete."
             }
@@ -79,8 +78,8 @@ pipeline {
                 echo "Checking GitHub authentication using Secret Text..."
                 echo "------------------------------------------------------------------------"
                 
-			// Native curl passes headers safely. Quote-chopping \"github\" stops Jenkins URL rewriting.	
-            // PowerShell parsing block using the flexible %GITHUB_TOKEN% to do a raw query on the  github API 
+                // Native curl passes headers safely. Quote-chopping \"github\" stops Jenkins URL rewriting.	
+                // PowerShell parsing block using the flexible %GITHUB_TOKEN% to do a raw query on the github API 
                 bat "C:\\Windows\\System32\\curl.exe -s -H \"Accept: application/vnd.github.v3+json\" -H \"User-Agent: Jenkins-Pipeline\" -H \"Authorization: token %GITHUB_TOKEN%\" \"https://api.\"github\".com/rate_limit\" | powershell -Command \"\$input | ConvertFrom-Json | ForEach-Object { \$_.resources.PSObject.Properties | ForEach-Object { \$time = [System.DateTimeOffset]::FromUnixTimeSeconds(\$_.Value.reset).LocalDateTime.ToString('yyyy-MM-dd HH:mm:ss'); Write-Output ('Stage: ' + \$_.Name.ToUpper().PadRight(28) + ' | Remaining: ' + \$_.Value.remaining.ToString().PadRight(5) + ' / ' + \$_.Value.limit.ToString().PadRight(6) + ' | Resets At: ' + \$time) } }\""
             }
         }
