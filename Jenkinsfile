@@ -26,7 +26,7 @@ pipeline {
                         git config user.name "mcorries"
                         git config user.email "mcorries123@gmail.com"
                         
-                        :: Force the remote origin URL to cleanly incorporate authentication variables
+                        :: Force the remote origin URL to cleanly incorporate authentication variables without typos
                         git remote set-url origin https://%GIT_USER%:%GIT_PASS%@github.com/mcorries/Check-github-rate-limits.git
                         
                         :: =======================================================================
@@ -42,7 +42,7 @@ pipeline {
                         :: =======================================================================
                         
                         :: NATIVE WINDOWS STATUS CHECK: Searches for local modifications in the targeted files
-                        git status --porcelain Jenkinsfile README.md | findstr /R "^.M" >nul
+                        git status --porcelain Jenkinsfile README.md | findstr /R "^.M" >nul || type nul
                         if %errorlevel% equ 0 (
                             echo Local changes detected! Merging and syncing upstream to GitHub...
                             git add Jenkinsfile README.md
@@ -51,8 +51,8 @@ pipeline {
                             :: Pull and rebase down from the active upstream branch (master) to safely handle dual-sided updates
                             git pull --rebase origin master
                             
-                            :: Push the combined, merged history up safely to your active branch
-                            git push origin HEAD
+                            :: FIXED: Uses a fully qualified destination refname to prevent detached HEAD destination rejections
+                            git push origin HEAD:refs/heads/master
                         ) else (
                             echo No local changes detected. Workspace is safe to refresh.
                         )
