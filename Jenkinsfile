@@ -23,11 +23,11 @@ pipeline {
                     bat """
                         @echo off
                         :: Configure real production git signature for clean traceability
-                        :: git config user.name "mcorries"
-                        :: git config user.email "mcorries123@gmail.com"
+                           git config user.name "mcorries"
+                           git config user.email "mcorries123@gmail.com"
                         :: Change email to my official GitHub anonymous noreply ID address. Because GitHub controls this specific address format, it automatically cross-references it with your Jenkins-Github personal access token string during the push, applies the cryptographic signature on its backend servers, and turns the badge green automatically
-                        git config user.name "mcorries"
-                        git config user.email "mcorries@users.noreply.github.com"
+                        :: git config user.name "mcorries"
+                        :: git config user.email "mcorries@users.noreply.github.com"
                         
                         :: Force the remote origin URL to cleanly incorporate authentication variables without typos
                         git remote set-url origin https://%GIT_USER%:%GIT_PASS%@github.com/mcorries/Check-github-rate-limits.git
