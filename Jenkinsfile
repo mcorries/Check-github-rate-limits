@@ -9,7 +9,7 @@ Yes, creating a local backup file named `jenkins.ori` (or `Jenkinsfile.bak`) in 
 
 ---
 
-However, to give you exactly what you asked for so you have both options ready, here is the single combined text block. The original version is fully wrapped in Groovy block comments (`/* ... */`) at the top, and the updated, fixed version is active at the bottom.
+However, to give you exactly what you asked for so you have both options ready, here is the single combined text block. The original version is fully wrapped in Groovy block comments (`/* ... * /`) at the top, and the updated, fixed version is active at the bottom.
 */
 
 /*
