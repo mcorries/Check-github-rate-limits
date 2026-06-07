@@ -158,6 +158,8 @@ pipeline {
                             git push origin HEAD:refs/heads/master
                         ) else (
                             echo No local changes detected. Workspace is safe to refresh.
+                            :: FORCE WINDOWS TO CLEAR LINGER STATUSES AND REPORT SUCCESS
+                            exit /b 0
                         )
                     """
                 }
