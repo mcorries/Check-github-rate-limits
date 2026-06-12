@@ -7,3 +7,4 @@ Test bidirectional local changes of 2 files, Jenkinsfile and README.md
 2.Change remote 2nd, local 1st, build local first then commit remote - same result, local changes overwritten
 
 \\
+This line edited directly on GitHub
