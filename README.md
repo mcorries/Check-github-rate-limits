@@ -9,3 +9,4 @@ Test bidirectional local changes of 2 files, Jenkinsfile and README.md
 \\
 This line edited directly on GitHub
 And again edited on Github
+"LOCAL TEST $(date)" 
